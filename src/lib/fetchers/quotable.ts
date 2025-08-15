@@ -1,8 +1,8 @@
 type Quote = { content: string; author: string };
 
-export async function fetchQuoteOfTheDay(): Promise<Quote> {
-    const response = await fetch("https://api.quotable.io/random", {
-        next: { revalidate: 3600 }, // Revalidate every hour
+export async function getQuoteOfTheDay(): Promise<Quote> {
+    const response = await fetch("http://api.quotable.io/random", {
+        next: { revalidate: 3600 },
     });
 
     if (!response.ok) {

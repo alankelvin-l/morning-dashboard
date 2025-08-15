@@ -2,8 +2,8 @@ import "server-only";
 import { headers } from "next/headers";
 
 export type Geo = {
-    lat: number;
-    lon: number;
+    latitude: string;
+    longitude: string;
     city?: string;
     country?: string;
 };
@@ -15,12 +15,12 @@ export async function getGeo(): Promise<Geo> {
 
     if (latitude && longitude) {
         return { 
-            lat: parseFloat(latitude), 
-            lon: parseFloat(longitude), 
+            latitude,
+            longitude, 
             city: headersList.get("x-vercel-ip-city") || undefined, 
             country: headersList.get("x-vercel-ip-country") || undefined 
         };
     }
 
-    return { lat: 6.2476, lon: -75.5748, city: "Medellin", country: "Colombia" };
+    return { latitude: "6.2476", longitude: "-75.5748", city: "Medellin", country: "Colombia" };
 };

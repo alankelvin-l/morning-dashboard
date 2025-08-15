@@ -1,8 +1,6 @@
-
-
-export default async function Page() {
+export default async function DashboardPage() {
   return (
-    <main className="mx-auto max-w-xl p-6 space-y-6">
+    <main>
       <h1 className="text-2xl font-semibold">Morning Dashboard</h1>
     </main>
   );

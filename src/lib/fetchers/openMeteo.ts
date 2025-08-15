@@ -1,24 +1,26 @@
-import { fetchWeatherApi } from 'openmeteo';
+type weather = {
+  temperature: number;
+  condition: number;
+};
 
-const API_BASE_URL = 'https://api.open-meteo.com/v1/forecast';
-
-export async function getWeatherData(latitude: number, longitude: number) {
+export async function getWeather(latitude: string, longitude: string): Promise<weather> {
   try {
-    const responses = await fetchWeatherApi(API_BASE_URL,{
-      latitude,
-      longitude,
-      current: true,
-    });
+    const responses = await fetch(`https://api.open-meteo.com/v1/forecast?latitude=${latitude}&longitude=${longitude}&daily=weather_code&current=temperature_2m`, {
+        next: { revalidate: 3600 },
+    })
 
-    const response = responses[0];
+    const weatherData = await responses.json();
 
-    if (!response || !response.current) {
-      throw new Error('Failed to fetch weather data');
-    }
+    return {
+        temperature: weatherData.current.temperature_2m,
+        condition: weatherData.daily.weather_code[0]
+    };
 
-    return response.current;
   } catch (error) {
     console.error('Error fetching weather data:', error);
-    return null;
+    return {
+      temperature: 0,
+      condition: 0, // Default values in case of error
+    };
   }
 }
